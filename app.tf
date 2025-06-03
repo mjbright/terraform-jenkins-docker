@@ -1,6 +1,6 @@
 module be-servers {
-    #source          = "../modules/be-container-servers"
-    source          = "git::https://github.com/mjbright/terraform-modules.git//modules/be-container-servers?ref=7b7b3174cac5cb48db59bf13a7fd8be626ca7ce8"
+    source          = "./modules/be-container-servers"
+    #source          = "git::https://github.com/mjbright/terraform-modules.git//modules/be-container-servers?ref=7b7b3174cac5cb48db59bf13a7fd8be626ca7ce8"
 
     network_name    = var.be_network_name
     image_names     = var.image_names
@@ -11,8 +11,8 @@ module be-servers {
 }
 
 module fe-lb {
-    #source          = "../modules/fe-container-lb"
-    source          = "git::https://github.com/mjbright/terraform-modules.git//modules/fe-container-lb?ref=7b7b3174cac5cb48db59bf13a7fd8be626ca7ce8"
+    source          = "./modules/fe-container-lb"
+    #source          = "git::https://github.com/mjbright/terraform-modules.git//modules/fe-container-lb?ref=7b7b3174cac5cb48db59bf13a7fd8be626ca7ce8"
 
     # We need module.be-servers to complete as it creates the apps_network
     depends_on = [ module.be-servers ]

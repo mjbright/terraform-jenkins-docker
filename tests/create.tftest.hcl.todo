@@ -1,0 +1,50 @@
+
+# Here we must define any providers used by the module:
+provider "azurerm" {
+  features { }
+}
+
+# TEST:    create_net
+# PURPOSE: Check that creation of resources performs correctly
+run create_net {
+  command = apply
+  
+  #plan_options {
+  #  refresh = false
+  #}
+
+  # Here we must define all required input variables to the module under test:
+  variables {
+    prefix         = "test-create"
+    resource_group = "studentN"
+    location       = "eastus"
+  }
+
+  # Check the vnet_id output:
+  assert {
+    condition     =  can(
+      regex(
+        "/subscriptions/.*/${var.resource_group}/.*/${var.prefix}-vnet",
+        output.vnet_id ) )
+    error_message = "Bad output for vnet_id, got '${output.vnet_id}'"
+  }
+
+  # Check the subnet_id output:
+  assert {
+    condition     =  can(
+      regex(
+        "/subscriptions/.*/${var.resource_group}/.*/${var.prefix}-subnet",
+        output.subnet_id ) )
+    error_message = "Bad output for subnet_id, got '${output.subnet_id}'"
+  }
+
+  # Check the netsecgrp_id output:
+  assert {
+    condition     =  can(
+      regex(
+        "/subscriptions/.*/${var.resource_group}/.*/${var.prefix}-sec-grp",
+        output.netsecgrp_id ) )
+    error_message = "Bad output for netsecgrp_id, got '${output.netsecgrp_id}'"
+  }
+}
+
